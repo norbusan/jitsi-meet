@@ -8,6 +8,7 @@ import { connect } from '../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 import { openURLInBrowser } from '../../base/util';
 import { isVpaasMeeting } from '../../jaas/functions';
+import { NOTIFY_CLICK_MODE } from '../constants';
 
 type Props = AbstractButtonProps & {
 
@@ -33,11 +34,13 @@ class HelpButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { _userDocumentationURL, handleClick } = this.props;
+        const { _userDocumentationURL, handleClick, notifyMode } = this.props;
 
         if (handleClick) {
             handleClick();
+        }
 
+        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
             return;
         }
 

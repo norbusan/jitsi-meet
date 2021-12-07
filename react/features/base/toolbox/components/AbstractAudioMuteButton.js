@@ -1,5 +1,6 @@
 // @flow
 
+import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { IconMicrophoneEmpty, IconMicrophoneEmptySlash } from '../../icons';
 
 import AbstractButton from './AbstractButton';
@@ -23,11 +24,13 @@ export default class AbstractAudioMuteButton<P: Props, S: *>
      * @returns {void}
      */
     _handleClick() {
-        const { handleClick } = this.props;
+        const { handleClick, notifyMode } = this.props;
 
         if (handleClick) {
             handleClick();
+        }
 
+        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
             return;
         }
 

@@ -14,6 +14,7 @@ import { IconSecurityOff, IconSecurityOn } from '../../../base/icons';
 import { isLocalParticipantModerator } from '../../../base/participants';
 import { connect } from '../../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
+import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { toggleSecurityDialog } from '../../actions';
 
 
@@ -48,11 +49,13 @@ class SecurityDialogButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { _locked, dispatch, handleClick } = this.props;
+        const { _locked, dispatch, handleClick, notifyMode } = this.props;
 
         if (handleClick) {
             handleClick();
+        }
 
+        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
             return;
         }
 

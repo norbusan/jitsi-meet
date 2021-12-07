@@ -72,8 +72,6 @@ class FullscreenButton extends AbstractButton<Props, *> {
 
         if (handleClick) {
             handleClick();
-
-            return;
         }
     }
 

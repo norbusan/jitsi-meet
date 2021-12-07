@@ -5,6 +5,7 @@ import { translate } from '../../../base/i18n';
 import { IconSettings } from '../../../base/icons';
 import { connect } from '../../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
+import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { openSettingsDialog } from '../../actions';
 import { SETTINGS_TABS } from '../../constants';
 
@@ -43,12 +44,15 @@ class SettingsButton extends AbstractButton<Props, *> {
         const {
             defaultTab = SETTINGS_TABS.DEVICES,
             dispatch,
-            handleClick
+            handleClick,
+            notifyMode
         } = this.props;
 
         if (handleClick) {
             handleClick();
+        }
 
+        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
             return;
         }
 

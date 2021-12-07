@@ -10,6 +10,7 @@ import { ToolboxButtonWithIcon } from '../../../base/toolbox/components';
 import { getLocalJitsiVideoTrack } from '../../../base/tracks';
 import { toggleVideoSettings, VideoSettingsPopup } from '../../../settings';
 import { getVideoSettingsVisibility } from '../../../settings/functions';
+import { NOTIFY_CLICK_MODE } from '../../constants';
 import { isVideoSettingsButtonDisabled } from '../../functions';
 import VideoMuteButton from '../VideoMuteButton';
 
@@ -40,6 +41,12 @@ type Props = {
      * If the button should be disabled.
      */
     isDisabled: boolean,
+
+    /**
+     * Notify mode for `toolbarButtonClicked` event -
+     * whether to only notify or to also prevent button click routine.
+     */
+    notifyMode?: string,
 
     /**
      * Flag controlling the visibility of the button.
@@ -112,11 +119,13 @@ class VideoSettingsButton extends Component<Props> {
      * @returns {void}
      */
     _onClick() {
-        const { handleClick, onVideoOptionsClick } = this.props;
+        const { handleClick, onVideoOptionsClick, notifyMode } = this.props;
 
         if (handleClick) {
             handleClick();
+        }
 
+        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
             return;
         }
 
@@ -129,7 +138,7 @@ class VideoSettingsButton extends Component<Props> {
      * @inheritdoc
      */
     render() {
-        const { handleClick, t, visible, isOpen } = this.props;
+        const { handleClick, t, visible, isOpen, notifyMode } = this.props;
 
         return visible ? (
             <VideoSettingsPopup>
@@ -144,10 +153,14 @@ class VideoSettingsButton extends Component<Props> {
                     iconTooltip = { t('toolbar.videoSettings') }
                     onIconClick = { this._onClick }
                     onIconKeyDown = { this._onEscClick }>
-                    <VideoMuteButton handleClick = { handleClick } />
+                    <VideoMuteButton
+                        handleClick = { handleClick }
+                        notifyMode = { notifyMode } />
                 </ToolboxButtonWithIcon>
             </VideoSettingsPopup>
-        ) : <VideoMuteButton handleClick = { handleClick } />;
+        ) : <VideoMuteButton
+            handleClick = { handleClick }
+            notifyMode = { notifyMode } />;
     }
 }
 

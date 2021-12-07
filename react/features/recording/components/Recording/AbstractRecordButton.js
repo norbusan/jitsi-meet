@@ -15,6 +15,7 @@ import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/
 import { isInBreakoutRoom } from '../../../breakout-rooms/functions';
 import { maybeShowPremiumFeatureDialog } from '../../../jaas/actions';
 import { FEATURES } from '../../../jaas/constants';
+import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { getActiveSession } from '../../functions';
 
 import { StartRecordingDialog, StopRecordingDialog } from './_';
@@ -78,13 +79,16 @@ export default class AbstractRecordButton<P: Props> extends AbstractButton<P, *>
      * @returns {void}
      */
     async _handleClick() {
-        const { _isRecordingRunning, dispatch, handleClick } = this.props;
+        const { _isRecordingRunning, dispatch, handleClick, notifyMode } = this.props;
 
         if (handleClick) {
             handleClick();
+        }
 
+        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
             return;
         }
+
 
         sendAnalytics(createToolbarEvent(
             'recording.button',

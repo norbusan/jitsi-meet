@@ -13,6 +13,7 @@ import {
     type AbstractButtonProps
 } from '../../base/toolbox/components';
 import { setOverflowMenuVisible } from '../../toolbox/actions';
+import { NOTIFY_CLICK_MODE } from '../../toolbox/constants';
 import { startAudioScreenShareFlow } from '../actions';
 import { isAudioOnlySharing } from '../functions';
 
@@ -47,13 +48,16 @@ class ShareAudioButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { dispatch, handleClick } = this.props;
+        const { dispatch, handleClick, notifyMode } = this.props;
 
         if (handleClick) {
             handleClick();
+        }
 
+        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
             return;
         }
+
 
         dispatch(startAudioScreenShareFlow());
         dispatch(setOverflowMenuVisible(false));

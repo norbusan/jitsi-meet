@@ -36,8 +36,6 @@ class ParticipantsPaneButton extends AbstractButton<Props, *> {
 
         if (handleClick) {
             handleClick();
-
-            return;
         }
     }
 

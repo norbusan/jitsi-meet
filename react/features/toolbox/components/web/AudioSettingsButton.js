@@ -10,6 +10,7 @@ import { connect } from '../../../base/redux';
 import { ToolboxButtonWithIcon } from '../../../base/toolbox/components';
 import { AudioSettingsPopup, toggleAudioSettings } from '../../../settings';
 import { getAudioSettingsVisibility } from '../../../settings/functions';
+import { NOTIFY_CLICK_MODE } from '../../constants';
 import { isAudioSettingsButtonDisabled } from '../../functions';
 import AudioMuteButton from '../AudioMuteButton';
 
@@ -34,6 +35,12 @@ type Props = {
      * If the button should be disabled.
      */
     isDisabled: boolean,
+
+    /**
+     * Notify mode for `toolbarButtonClicked` event -
+     * whether to only notify or to also prevent button click routine.
+     */
+    notifyMode?: string,
 
     /**
      * Used for translation.
@@ -94,11 +101,13 @@ class AudioSettingsButton extends Component<Props> {
      * @returns {void}
      */
     _onClick() {
-        const { handleClick, onAudioOptionsClick } = this.props;
+        const { handleClick, onAudioOptionsClick, notifyMode } = this.props;
 
         if (handleClick) {
             handleClick();
+        }
 
+        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
             return;
         }
 
@@ -111,7 +120,7 @@ class AudioSettingsButton extends Component<Props> {
      * @inheritdoc
      */
     render() {
-        const { handleClick, hasPermissions, isDisabled, visible, isOpen, t } = this.props;
+        const { handleClick, hasPermissions, isDisabled, visible, isOpen, notifyMode, t } = this.props;
         const settingsDisabled = !hasPermissions
             || isDisabled
             || !JitsiMeetJS.mediaDevices.isMultipleAudioInputSupported();
@@ -129,10 +138,14 @@ class AudioSettingsButton extends Component<Props> {
                     iconTooltip = { t('toolbar.audioSettings') }
                     onIconClick = { this._onClick }
                     onIconKeyDown = { this._onEscClick }>
-                    <AudioMuteButton handleClick = { handleClick } />
+                    <AudioMuteButton
+                        handleClick = { handleClick }
+                        notifyMode = { notifyMode } />
                 </ToolboxButtonWithIcon>
             </AudioSettingsPopup>
-        ) : <AudioMuteButton handleClick = { handleClick } />;
+        ) : <AudioMuteButton
+            handleClick = { handleClick }
+            notifyMode = { notifyMode } />;
     }
 }
 

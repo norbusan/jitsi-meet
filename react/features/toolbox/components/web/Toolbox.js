@@ -75,7 +75,7 @@ import {
     setToolbarHovered,
     showToolbox
 } from '../../actions';
-import { THRESHOLDS, NOT_APPLICABLE } from '../../constants';
+import { THRESHOLDS, NOT_APPLICABLE, NOTIFY_CLICK_MODE } from '../../constants';
 import { isToolboxVisible } from '../../functions';
 import DownloadButton from '../DownloadButton';
 import HangupButton from '../HangupButton';
@@ -105,7 +105,7 @@ type Props = {
     /**
      * Toolbar buttons which have their click exposed through the API.
      */
-    _buttonsWithNotifyClick: Array<string>,
+    _buttonsWithNotifyClick: Array<string | Object>,
 
     /**
      * Whether or not the chat feature is currently displayed.
@@ -819,11 +819,30 @@ class Toolbox extends Component<Props> {
         }
 
         Object.values(buttons).forEach((button: any) => {
-            if (
-                typeof button === 'object'
-                && this.props._buttonsWithNotifyClick.includes(button.key)
-            ) {
-                button.handleClick = () => APP.API.notifyToolbarButtonClicked(button.key);
+            if (typeof button === 'object') {
+                const notify = this.props._buttonsWithNotifyClick.find(
+                    (btn: string | Object) =>
+                        (typeof btn === 'string' && btn === button.key)
+                        || (typeof btn === 'object' && btn.key === button.key)
+                );
+
+                if (notify) {
+                    const notifyMode = typeof notify === 'string' || notify.preventExecution
+                        ? NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY
+                        : NOTIFY_CLICK_MODE.ONLY_NOTIFY;
+
+                    const { handleClick } = button;
+
+                    button.notifyMode = notifyMode;
+                    button.handleClick = () => {
+                        APP.API.notifyToolbarButtonClicked(
+                            button.key, notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY
+                        );
+                        if (notifyMode === NOTIFY_CLICK_MODE.ONLY_NOTIFY) {
+                            handleClick?.();
+                        }
+                    };
+                }
             }
         });
     }

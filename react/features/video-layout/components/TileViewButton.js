@@ -12,6 +12,7 @@ import { IconTileView } from '../../base/icons';
 import { connect } from '../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 import { setOverflowMenuVisible } from '../../toolbox/actions';
+import { NOTIFY_CLICK_MODE } from '../../toolbox/constants';
 import { setTileView } from '../actions';
 import { shouldDisplayTileView } from '../functions';
 import logger from '../logger';
@@ -52,11 +53,13 @@ class TileViewButton<P: Props> extends AbstractButton<P, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { _tileViewEnabled, dispatch, handleClick } = this.props;
+        const { _tileViewEnabled, dispatch, handleClick, notifyMode } = this.props;
 
         if (handleClick) {
             handleClick();
+        }
 
+        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
             return;
         }
 

@@ -53,8 +53,6 @@ class VideoQualityButton extends AbstractButton<Props, *> {
 
         if (handleClick) {
             handleClick();
-
-            return;
         }
     }
 }

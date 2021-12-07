@@ -26,6 +26,12 @@ export type Props = {
      handleClick?: Function,
 
     /**
+     * Notify mode for `toolbarButtonClicked` event -
+     * whether to only notify or to also prevent button click routine.
+     */
+    notifyMode?: string,
+
+    /**
      * Whether to show the label or not.
      */
     showLabel: boolean,

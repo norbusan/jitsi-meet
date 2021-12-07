@@ -60,8 +60,6 @@ class ChatButton extends AbstractButton<Props, *> {
 
         if (handleClick) {
             handleClick();
-
-            return;
         }
     }
 
