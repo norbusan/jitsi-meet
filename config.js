@@ -643,6 +643,11 @@ var config = {
     //     'tileview',
     //     'toggle-camera',
     //     'videoquality',
+    //     // The add passcode button from the security dialog.
+    //     {
+    //         key: 'add-passcode',
+    //         preventExecution: false
+    //     }
     //     '__end'
     // ],
 
