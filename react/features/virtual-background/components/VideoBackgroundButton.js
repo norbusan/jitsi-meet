@@ -6,7 +6,6 @@ import { IconVirtualBackground } from '../../base/icons';
 import { connect } from '../../base/redux';
 import { AbstractButton } from '../../base/toolbox/components';
 import type { AbstractButtonProps } from '../../base/toolbox/components';
-import { NOTIFY_CLICK_MODE } from '../../toolbox/constants';
 import { checkBlurSupport } from '../functions';
 
 import { VirtualBackgroundDialog } from './index';
@@ -44,15 +43,7 @@ class VideoBackgroundButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { dispatch, handleClick, notifyMode } = this.props;
-
-        if (handleClick) {
-            handleClick();
-        }
-
-        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
-            return;
-        }
+        const { dispatch } = this.props;
 
         dispatch(openDialog(VirtualBackgroundDialog));
     }

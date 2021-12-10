@@ -5,7 +5,6 @@ import { isLocalParticipantModerator } from '../../base/participants';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 import { maybeShowPremiumFeatureDialog } from '../../jaas/actions';
 import { FEATURES } from '../../jaas/constants';
-import { NOTIFY_CLICK_MODE } from '../../toolbox/constants';
 import { toggleRequestingSubtitles } from '../actions';
 
 export type AbstractProps = AbstractButtonProps & {
@@ -39,15 +38,7 @@ export class AbstractClosedCaptionButton
      * @returns {void}
      */
     async _handleClick() {
-        const { _requestingSubtitles, dispatch, handleClick, notifyMode } = this.props;
-
-        if (handleClick) {
-            handleClick();
-        }
-
-        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
-            return;
-        }
+        const { _requestingSubtitles, dispatch } = this.props;
 
         sendAnalytics(createToolbarEvent('transcribing.ccButton',
             {

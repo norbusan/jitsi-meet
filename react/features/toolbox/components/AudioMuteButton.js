@@ -120,7 +120,7 @@ class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
                 ACTION_SHORTCUT_TRIGGERED,
                 { enable: !this._isAudioMuted() }));
 
-        super._handleClick();
+        super._onClick();
     }
 
     /**

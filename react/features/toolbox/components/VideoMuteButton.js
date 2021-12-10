@@ -146,7 +146,7 @@ class VideoMuteButton extends AbstractVideoMuteButton<Props, *> {
                 ACTION_SHORTCUT_TRIGGERED,
                 { enable: !this._isVideoMuted() }));
 
-        super._handleClick();
+        super._onClick();
     }
 
     /**

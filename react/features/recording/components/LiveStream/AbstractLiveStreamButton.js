@@ -11,7 +11,6 @@ import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/
 import { isInBreakoutRoom } from '../../../breakout-rooms/functions';
 import { maybeShowPremiumFeatureDialog } from '../../../jaas/actions';
 import { FEATURES } from '../../../jaas/constants';
-import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { getActiveSession } from '../../functions';
 
 import {
@@ -78,15 +77,7 @@ export default class AbstractLiveStreamButton<P: Props> extends AbstractButton<P
      * @returns {void}
      */
     async _handleClick() {
-        const { _isLiveStreamRunning, dispatch, handleClick, notifyMode } = this.props;
-
-        if (handleClick) {
-            handleClick();
-        }
-
-        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
-            return;
-        }
+        const { _isLiveStreamRunning, dispatch } = this.props;
 
         const dialogShown = await dispatch(maybeShowPremiumFeatureDialog(FEATURES.RECORDING));
 

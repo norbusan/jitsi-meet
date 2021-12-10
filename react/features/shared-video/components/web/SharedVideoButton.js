@@ -9,7 +9,6 @@ import {
     AbstractButton,
     type AbstractButtonProps
 } from '../../../base/toolbox/components';
-import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { toggleSharedVideo } from '../../actions.any';
 import { isSharingStatus } from '../../functions';
 
@@ -67,16 +66,6 @@ class SharedVideoButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { handleClick, notifyMode } = this.props;
-
-        if (handleClick) {
-            handleClick();
-        }
-
-        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
-            return;
-        }
-
         this._doToggleSharedVideo();
     }
 

@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 
+import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
 import { combineStyles } from '../../styles';
 
 import type { Styles } from './AbstractToolboxItem';
@@ -13,6 +14,11 @@ export type Props = {
      * Function to be called after the click handler has been processed.
      */
     afterClick: ?Function,
+
+    /**
+     * The button's key.
+     */
+    buttonKey?: string,
 
     /**
      * Extra styles which will be applied in conjunction with `styles` or
@@ -56,6 +62,8 @@ export type Props = {
      */
     visible: boolean
 };
+
+declare var APP: Object;
 
 /**
  * Default style for disabled buttons.
@@ -254,17 +262,29 @@ export default class AbstractButton<P: Props, S: *> extends Component<P, S> {
     _onClick: (*) => void;
 
     /**
-     * Handles clicking / pressing the button, and toggles the audio mute state
-     * accordingly.
+     * Handles clicking / pressing the button.
      *
      * @param {Object} e - Event.
      * @private
      * @returns {void}
      */
     _onClick(e) {
-        const { afterClick } = this.props;
+        const { afterClick, handleClick, notifyMode, buttonKey } = this.props;
 
-        this._handleClick();
+        if (typeof APP !== 'undefined' && notifyMode) {
+            APP.API.notifyToolbarButtonClicked(
+                buttonKey, notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY
+            );
+        }
+
+        if (notifyMode !== NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
+            if (handleClick) {
+                handleClick();
+            }
+
+            this._handleClick();
+        }
+
         afterClick && afterClick(e);
 
         // blur after click to release focus from button to allow PTT.

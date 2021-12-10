@@ -6,7 +6,6 @@ import { translate } from '../../base/i18n';
 import { IconFeedback } from '../../base/icons';
 import { connect } from '../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
-import { NOTIFY_CLICK_MODE } from '../../toolbox/constants';
 import { openFeedbackDialog } from '../actions';
 
 /**
@@ -41,15 +40,7 @@ class FeedbackButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { _conference, dispatch, handleClick, notifyMode } = this.props;
-
-        if (handleClick) {
-            handleClick();
-        }
-
-        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
-            return;
-        }
+        const { _conference, dispatch } = this.props;
 
         sendAnalytics(createToolbarEvent('feedback'));
         dispatch(openFeedbackDialog(_conference));

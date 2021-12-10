@@ -6,7 +6,6 @@ import { getLocalParticipant } from '../../../base/participants';
 import { connect } from '../../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
 import { openSettingsDialog, SETTINGS_TABS } from '../../../settings';
-import { NOTIFY_CLICK_MODE } from '../../constants';
 
 import ProfileButtonAvatar from './ProfileButtonAvatar';
 
@@ -96,15 +95,7 @@ class ProfileButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { dispatch, _unclickable, handleClick, notifyMode } = this.props;
-
-        if (handleClick) {
-            handleClick();
-        }
-
-        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
-            return;
-        }
+        const { dispatch, _unclickable } = this.props;
 
         if (!_unclickable) {
             sendAnalytics(createToolbarEvent('profile'));

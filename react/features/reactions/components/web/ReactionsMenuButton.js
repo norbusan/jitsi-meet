@@ -25,6 +25,11 @@ type Props = {
     _reactionsEnabled: Boolean,
 
     /**
+     * The button's key.
+     */
+     buttonKey?: string,
+
+    /**
      * Redux dispatch function.
      */
     dispatch: Function,
@@ -43,6 +48,13 @@ type Props = {
      * Whether or not it's a mobile browser.
      */
     isMobile: boolean,
+
+    /**
+     * Notify mode for `toolbarButtonClicked` event -
+     * whether to only notify or to also prevent button click routine.
+     */
+    notifyMode?: string,
+
 
     /**
      * Whether or not the local participant's hand is raised.
@@ -70,10 +82,12 @@ declare var APP: Object;
  */
 function ReactionsMenuButton({
     _reactionsEnabled,
+    buttonKey,
     dispatch,
     handleClick,
     isOpen,
     isMobile,
+    notifyMode,
     raisedHand,
     reactionsQueue,
     t
@@ -84,8 +98,10 @@ function ReactionsMenuButton({
 
     const raiseHandButton = (<ToolbarButton
         accessibilityLabel = { t('toolbar.accessibilityLabel.raiseHand') }
+        buttonKey = { buttonKey }
         icon = { IconRaisedHand }
-        key = 'raise-hand'
+        key = { buttonKey }
+        notifyMode = { notifyMode }
         onClick = { handleClick }
         toggled = { raisedHand }
         tooltip = { t('toolbar.raiseHand') } />);
@@ -100,10 +116,12 @@ function ReactionsMenuButton({
                             ariaExpanded = { isOpen }
                             ariaHasPopup = { true }
                             ariaLabel = { t('toolbar.accessibilityLabel.reactionsMenu') }
+                            buttonKey = { buttonKey }
                             icon = { IconArrowUp }
                             iconDisabled = { false }
                             iconId = 'reactions-menu-button'
                             iconTooltip = { t(`toolbar.${isOpen ? 'closeReactionsMenu' : 'openReactionsMenu'}`) }
+                            notifyMode = { notifyMode }
                             onIconClick = { toggleReactionsMenu }>
                             {raiseHandButton}
                         </ToolboxButtonWithIcon>

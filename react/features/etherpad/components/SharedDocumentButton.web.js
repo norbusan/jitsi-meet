@@ -8,8 +8,6 @@ import { IconShareDoc } from '../../base/icons';
 import { connect } from '../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 import { toggleDocument } from '../../etherpad/actions';
-import { NOTIFY_CLICK_MODE } from '../../toolbox/constants';
-
 
 type Props = AbstractButtonProps & {
 
@@ -60,15 +58,7 @@ class SharedDocumentButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { _editing, dispatch, handleClick, notifyMode } = this.props;
-
-        if (handleClick) {
-            handleClick();
-        }
-
-        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
-            return;
-        }
+        const { _editing, dispatch } = this.props;
 
         sendAnalytics(createToolbarEvent(
             'toggle.etherpad',

@@ -5,7 +5,6 @@ import { IconCameraRefresh } from '../../../base/icons';
 import { connect } from '../../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
 import { isLocalCameraTrackMuted, isToggleCameraEnabled, toggleCamera } from '../../../base/tracks';
-import { NOTIFY_CLICK_MODE } from '../../constants';
 
 /**
  * The type of the React {@code Component} props of {@link ToggleCameraButton}.
@@ -42,15 +41,7 @@ class ToggleCameraButton extends AbstractButton<Props, any> {
      * @returns {void}
      */
     _handleClick() {
-        const { dispatch, handleClick, notifyMode } = this.props;
-
-        if (handleClick) {
-            handleClick();
-        }
-
-        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
-            return;
-        }
+        const { dispatch } = this.props;
 
         dispatch(toggleCamera());
     }

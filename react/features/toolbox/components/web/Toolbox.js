@@ -808,12 +808,12 @@ class Toolbox extends Component<Props> {
     }
 
     /**
-     * Overwrites click handlers for buttons in case click is exposed through the iframe API.
+     * Sets the notify click mode for the buttons.
      *
      * @param {Object} buttons - The list of toolbar buttons.
      * @returns {void}
      */
-    _overwriteButtonsClickHandlers(buttons) {
+    _setButtonsNotifyClickMode(buttons) {
         if (typeof APP === 'undefined' || !this.props._buttonsWithNotifyClick?.length) {
             return;
         }
@@ -831,17 +831,7 @@ class Toolbox extends Component<Props> {
                         ? NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY
                         : NOTIFY_CLICK_MODE.ONLY_NOTIFY;
 
-                    const { handleClick } = button;
-
                     button.notifyMode = notifyMode;
-                    button.handleClick = () => {
-                        APP.API.notifyToolbarButtonClicked(
-                            button.key, notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY
-                        );
-                        if (notifyMode === NOTIFY_CLICK_MODE.ONLY_NOTIFY) {
-                            handleClick?.();
-                        }
-                    };
                 }
             }
         });
@@ -862,7 +852,7 @@ class Toolbox extends Component<Props> {
 
         const buttons = this._getAllButtons();
 
-        this._overwriteButtonsClickHandlers(buttons);
+        this._setButtonsNotifyClickMode(buttons);
         const isHangupVisible = isToolbarButtonEnabled('hangup', _toolbarButtons);
         const { order } = THRESHOLDS.find(({ width }) => _clientWidth > width)
             || THRESHOLDS[THRESHOLDS.length - 1];
@@ -1272,6 +1262,7 @@ class Toolbox extends Component<Props> {
                         {mainMenuButtons.map(({ Content, key, ...rest }) => Content !== Separator && (
                             <Content
                                 { ...rest }
+                                buttonKey = { key }
                                 key = { key } />))}
 
                         {Boolean(overflowMenuButtons.length) && (
@@ -1297,6 +1288,7 @@ class Toolbox extends Component<Props> {
                                                 {showSeparator && <Separator key = { `hr${group}` } />}
                                                 <Content
                                                     { ...rest }
+                                                    buttonKey = { key }
                                                     key = { key }
                                                     showLabel = { true } />
                                             </Fragment>

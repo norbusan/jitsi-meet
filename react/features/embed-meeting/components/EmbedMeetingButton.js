@@ -6,7 +6,6 @@ import { translate } from '../../base/i18n';
 import { IconCodeBlock } from '../../base/icons';
 import { connect } from '../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
-import { NOTIFY_CLICK_MODE } from '../../toolbox/constants';
 
 import EmbedMeetingDialog from './EmbedMeetingDialog';
 
@@ -37,15 +36,7 @@ class EmbedMeetingButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { dispatch, handleClick, notifyMode } = this.props;
-
-        if (handleClick) {
-            handleClick();
-        }
-
-        if (notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
-            return;
-        }
+        const { dispatch } = this.props;
 
         sendAnalytics(createToolbarEvent('embed.meeting'));
         dispatch(openDialog(EmbedMeetingDialog));

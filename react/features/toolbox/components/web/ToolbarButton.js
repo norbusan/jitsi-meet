@@ -4,6 +4,7 @@ import React from 'react';
 
 import { Icon } from '../../../base/icons';
 import { Tooltip } from '../../../base/tooltip';
+import { NOTIFY_CLICK_MODE } from '../../constants';
 import AbstractToolbarButton from '../AbstractToolbarButton';
 import type { Props as AbstractToolbarButtonProps }
     from '../AbstractToolbarButton';
@@ -12,6 +13,17 @@ import type { Props as AbstractToolbarButtonProps }
  * The type of the React {@code Component} props of {@link ToolbarButton}.
  */
 export type Props = AbstractToolbarButtonProps & {
+
+    /**
+     * The button's key.
+     */
+     buttonKey?: string,
+
+    /**
+     * Notify mode for `toolbarButtonClicked` event -
+     * whether to only notify or to also prevent button click routine.
+     */
+    notifyMode?: string,
 
     /**
      * The text to display in the tooltip.
@@ -29,6 +41,8 @@ export type Props = AbstractToolbarButtonProps & {
      */
     onKeyDown?: Function
 };
+
+declare var APP: Object;
 
 /**
  * Represents a button in the toolbar.
@@ -82,7 +96,17 @@ class ToolbarButton extends AbstractToolbarButton<Props> {
      * @returns {void}
      */
     _onClick(e) {
-        this.props.onClick(e);
+        const { buttonKey, notifyMode, onClick } = this.props;
+
+        if (typeof APP !== 'undefined' && notifyMode) {
+            APP.API.notifyToolbarButtonClicked(
+                buttonKey, notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY
+            );
+        }
+
+        if (notifyMode !== NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY) {
+            onClick(e);
+        }
 
         // blur after click to release focus from button to allow PTT.
         e && e.currentTarget && e.currentTarget.blur();
