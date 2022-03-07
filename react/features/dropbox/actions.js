@@ -27,8 +27,8 @@ export function authorizeDropbox() {
         const config = {
             oAuthURL: 'https://cloud.preining.info/index.php/apps/oauth2/authorize',
             tokenURL: 'https://cloud.preining.info/index.php/apps/oauth2/api/v1/token',
-            clientID: 'xcgU61E19lGTPO2JEgxGU4SURHhNgWwjDZ45tRRTBQ6KY26gslJ4CFlejimZsnNT',
-            secret: 'kFNc3NyvG8ozztumzz112zsopf0CaJc7kBgzzfXgXK4DsnL9gPvEaKuspfxS5Msq',
+            clientID: 'UANNwYmo0TZ4izqbiEPqkWwPxrjnBhx87LmZQHjFqRE7VW0OZpaqYmacBLgtnfb3',
+            secret: 'vaiFL6Vlrsvn7VYPnu6RbdFBWYULgD5VD0c7jSg2rw0XZMKmCy8JXbM5TsgRfz5X',
             redirectURL: 'https://meet.preining.info/static/oauth.html'
         }
 
