@@ -786,6 +786,7 @@
         "limitNotificationDescriptionWeb": "Due to high demand your recording will be limited to {{limit}} min. For unlimited recordings try <a href={{url}} rel='noopener noreferrer' target='_blank'>{{app}}</a>.",
         "limitNotificationDescriptionNative": "Due to high demand your recording will be limited to {{limit}} min. For unlimited recordings try <3>{{app}}</3>.",
         "authDropboxText": "Upload to Dropbox",
+        "authNextcloudText": "Upload to Nextcloud",
         "availableSpace": "Available space: {{spaceLeft}} MB (approximately {{duration}} minutes of recording)",
         "beta": "BETA",
         "busy": "We're working on freeing recording resources. Please try again in a few minutes.",

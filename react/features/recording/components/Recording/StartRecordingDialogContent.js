@@ -26,7 +26,7 @@ import { isVpaasMeeting } from '../../../jaas/functions';
 import { RECORDING_TYPES } from '../../constants';
 import { getRecordingDurationEstimation } from '../../functions';
 
-import { DROPBOX_LOGO, ICON_CLOUD, JITSI_LOGO } from './styles';
+import { DROPBOX_LOGO, NEXTCLOUD_LOGO, ICON_CLOUD, JITSI_LOGO } from './styles';
 
 type Props = {
 
@@ -332,7 +332,7 @@ class StartRecordingDialogContent extends Component<Props> {
                         className = 'recording-icon-container'>
                         <Image
                             className = 'recording-icon'
-                            src = { DROPBOX_LOGO }
+                            src = { NEXTCLOUD_LOGO }
                             style = { styles.recordingIcon } />
                     </Container>
                     <Text
@@ -341,7 +341,7 @@ class StartRecordingDialogContent extends Component<Props> {
                             ..._dialogStyles.text,
                             ...styles.title
                         }}>
-                        { t('recording.authDropboxText') }
+                        { t('recording.authNextcloudText') }
                     </Text>
                     { switchContent }
                 </Container>
