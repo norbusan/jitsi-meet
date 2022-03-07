@@ -4,7 +4,7 @@ export default {};
 
 export const DROPBOX_LOGO = 'images/dropboxLogo_square.png';
 
-export const NEXTCLOUD_LOGO = 'images/nextcloud-icon.png';
+export const NEXTCLOUD_LOGO = 'images/nextcloud_square.png';
 
 export const ICON_CLOUD = 'images/icon-cloud.png';
 
