@@ -7,12 +7,20 @@
     <!--#include virtual="/title.html" -->
     <script>
         (function() {
+            /*
             var windowName = window.name;
             window.opener && window.opener.postMessage({
                 type: 'dropbox-login',
                 windowName,
                 url: window.location.href
             }, window.location.origin);
+	   */
+        const queryParams = [...new URLSearchParams(window.location.search).entries()].reduce((obj, e) => ({...obj, [e[0]]: e[1]}), {});
+
+        const loginChannel = new BroadcastChannel('oauthLoginChannel');
+        loginChannel.postMessage(queryParams.code); // send the code
+        loginChannel.close();
+        window.close();
         })();
     </script>
 </head>
