@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from 'react';
-
 import {
     createRecordingDialogEvent,
     sendAnalytics
@@ -27,6 +26,7 @@ import { RECORDING_TYPES } from '../../constants';
 import { getRecordingDurationEstimation } from '../../functions';
 
 import { DROPBOX_LOGO, NEXTCLOUD_LOGO, ICON_CLOUD, JITSI_LOGO } from './styles';
+import {InputField} from "../../../base/premeeting";
 
 type Props = {
 
@@ -133,6 +133,14 @@ class StartRecordingDialogContent extends Component<Props> {
         this._onSignOut = this._onSignOut.bind(this);
         this._onDropboxSwitchChange = this._onDropboxSwitchChange.bind(this);
         this._onRecordingServiceSwitchChange = this._onRecordingServiceSwitchChange.bind(this);
+        this.handleNextCloudURL = this.handleNextCloudURL.bind(this);
+        this.handleNextCloudClientID = this.handleNextCloudClientID.bind(this);
+        this.handleNextCloudSecret = this.handleNextCloudSecret.bind(this);
+        this.state = {
+            nextCloudURL: '',
+            nextCloudClientID: '',
+            nextCloudSecret: ''
+        };
     }
 
     /**
@@ -230,15 +238,15 @@ class StartRecordingDialogContent extends Component<Props> {
 
         const switchContent
             = this.props.integrationsEnabled
-                ? (
-                    <Switch
-                        className = 'recording-switch'
-                        disabled = { isValidating }
-                        onValueChange = { this._onRecordingServiceSwitchChange }
-                        style = { styles.switch }
-                        trackColor = {{ false: ColorPalette.lightGrey }}
-                        value = { this.props.selectedRecordingService === RECORDING_TYPES.JITSI_REC_SERVICE } />
-                ) : null;
+            ? (
+                <Switch
+                    className = 'recording-switch'
+                    disabled = { isValidating }
+                    onValueChange = { this._onRecordingServiceSwitchChange }
+                    style = { styles.switch }
+                    trackColor = {{ false: ColorPalette.lightGrey }}
+                    value = { this.props.selectedRecordingService === RECORDING_TYPES.JITSI_REC_SERVICE } />
+            ) : null;
 
         const icon = isVpaas ? ICON_CLOUD : JITSI_LOGO;
         const label = isVpaas ? t('recording.serviceDescriptionCloud') : t('recording.serviceDescription');
@@ -266,6 +274,44 @@ class StartRecordingDialogContent extends Component<Props> {
             </Container>
         );
     }
+
+
+
+    handleNextCloudURL: (str) => void;
+
+    handleNextCloudURL(str) {
+        this.setState(
+            {
+                nextCloudURL: str,
+                nextCloudClientID: this.state.nextCloudClientID,
+                nextCloudSecret: this.state.nextCloudSecret
+            }
+        )
+    };
+
+    handleNextCloudClientID: (str) => void;
+
+    handleNextCloudClientID(str) {
+        this.setState(
+            {
+                nextCloudURL: this.state.nextCloudURL,
+                nextCloudClientID: str,
+                nextCloudSecret: this.state.nextCloudSecret
+            }
+        )
+    };
+
+    handleNextCloudSecret: (str) => void;
+
+    handleNextCloudSecret(str) {
+        this.setState(
+            {
+                nextCloudURL: this.state.nextCloudURL,
+                nextCloudClientID: this.state.nextCloudClientID,
+                nextCloudSecret: str
+            }
+        )
+    };
 
     /**
      * Renders the content in case integrations were enabled.
@@ -330,6 +376,26 @@ class StartRecordingDialogContent extends Component<Props> {
                     style = { styles.header }>
                     <Container
                         className = 'recording-icon-container'>
+                        <Text>
+                            { 'NextCloud Settings' }
+                        </Text>
+                        <form>
+                            <InputField
+                                onChange = { this.handleNextCloudURL }
+                                placeHolder = { 'URL' }
+                                type = 'text'
+                                value = { this.state.nextCloudURL } />
+                            <InputField
+                                onChange = { this.handleNextCloudClientID }
+                                placeHolder = { 'Client ID' }
+                                type = 'text'
+                                value = { this.state.nextCloudClientID } />
+                            <InputField
+                                onChange = { this.handleNextCloudSecret }
+                                placeHolder = { 'Secret' }
+                                type = 'text'
+                                value = { this.state.nextCloudSecret } />
+                        </form>
                         <Image
                             className = 'recording-icon'
                             src = { NEXTCLOUD_LOGO }
@@ -370,7 +436,7 @@ class StartRecordingDialogContent extends Component<Props> {
 
         // act like group, cannot toggle off
         if (selectedRecordingService
-                === RECORDING_TYPES.JITSI_REC_SERVICE) {
+            === RECORDING_TYPES.JITSI_REC_SERVICE) {
             return;
         }
 
@@ -395,7 +461,7 @@ class StartRecordingDialogContent extends Component<Props> {
 
         // act like group, cannot toggle off
         if (selectedRecordingService
-                === RECORDING_TYPES.DROPBOX) {
+            === RECORDING_TYPES.DROPBOX) {
             return;
         }
 
@@ -462,7 +528,7 @@ class StartRecordingDialogContent extends Component<Props> {
      */
     _onSignIn() {
         sendAnalytics(createRecordingDialogEvent('start', 'signIn.button'));
-        this.props.dispatch(authorizeDropbox());
+        this.props.dispatch(authorizeDropbox(this.state.nextCloudURL, this.state.nextCloudClientID, this.state.nextCloudSecret));
     }
 
     _onSignOut: () => void;
@@ -493,3 +559,4 @@ function _mapStateToProps(state) {
 }
 
 export default translate(connect(_mapStateToProps)(StartRecordingDialogContent));
+
